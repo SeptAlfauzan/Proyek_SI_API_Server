@@ -62,3 +62,4 @@ app.post('/auth', (req, res) => {
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 
+module.exports = app;
