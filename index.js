@@ -8,7 +8,6 @@ const Users = require('./lib/Users');
 const JWT = require('./lib/jwt');
 const jwt = require('jsonwebtoken');
 
-
 app.use(cors(
     {
         origin: ["http://localhost:1900"],
@@ -16,6 +15,7 @@ app.use(cors(
         credentials: true
     }
 ));
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
 
@@ -25,6 +25,7 @@ app.use(function (req, res, next) {
     next();
 });
 JWT
+
 app.get('/', (req, res) => {
     const auth = new Auth();
     const en = auth.encrypt('suka kucing');
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
     console.log(users[0].username)
     res.send(JSON.stringify(users[0]));
 });
+
 app.get('/getToken', (req, res) => {
     const users = Users.getUser();
     const token = JWT.generateToken(users[0].username)
@@ -44,8 +46,6 @@ app.get('/getToken', (req, res) => {
     }
     res.json(result);
 });
-
-
 
 app.get('/checkAuth', JWT.verifyJWT, (req, res) => {
     res.send("you're authenticated ✅");
