@@ -4,11 +4,13 @@ const port = process.env.PORT || 8000;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-
+// utils
 const Auth = require('./src/utils/AuthUtils');
 const Users = require('./src/utils/Users');
-const JWT = require('./src/utils/JWTUtils');
-const AuthMiddleware = require('./src/middlewares/AuthMiddleware');
+// middleware
+// router
+const AuthRouter = require('./src/routes/AuthRouter')
+const RegisterRouter = require('./src/routes/RegisterRouter')
 
 app.use(cors(
     {
@@ -28,38 +30,12 @@ app.use(function (req, res, next) {
 });
 
 app.get('/', (req, res) => {
-    const auth = new Auth();
-    const en = auth.encrypt('suka kucing');
-    const de = auth.decrypt(en);
-    const users = Users.getUser();
-    console.log(users[0].username)
-    res.send(JSON.stringify(users[0]));
+    res.send(JSON.stringify({ message: 'welcome 👋' }));
 });
-
-app.get('/getToken', (req, res) => {
-    const users = Users.getUser();
-    const token = JWT.generateToken(users[0].username)
-    console.log(users[0].username)
-    const result = {
-        auth: true,
-        username: users[0].username,
-        token
-    }
-    res.json(result);
-});
-// IT WILL BREAK LMAO
-app.get('/checkAuth', AuthMiddleware.auth, (req, res) => {
-    res.send("you're authenticated ✅");
-})
-
-app.post('/auth', (req, res) => {
-    const { username, password } = req.body;
-    const users = Users.getUser();
-    const getExactUser = users.filter(user => user.username === username)
-    if (getExactUser.length == 0) return res.status(404).send('Username not found')
-    console.log(getExactUser)
-    res.json(password)
-})
+// Edit routes auth di file ./src/routes/AuthRouter.js
+app.use('/api/auth', AuthRouter);
+// Edit routes auth di file ./src/routes/AuthRouter.js
+app.use('/api/register', RegisterRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 
