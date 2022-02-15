@@ -3,10 +3,12 @@ const app = express();
 const port = process.env.PORT || 8000;
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const Auth = require('./lib/auth');
-const Users = require('./lib/Users');
-const JWT = require('./lib/jwt');
 const jwt = require('jsonwebtoken');
+
+const Auth = require('./src/utils/AuthUtils');
+const Users = require('./src/utils/Users');
+const JWT = require('./src/utils/JWTUtils');
+const AuthMiddleware = require('./src/middlewares/AuthMiddleware');
 
 app.use(cors(
     {
@@ -24,7 +26,6 @@ app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 });
-JWT
 
 app.get('/', (req, res) => {
     const auth = new Auth();
@@ -46,8 +47,8 @@ app.get('/getToken', (req, res) => {
     }
     res.json(result);
 });
-
-app.get('/checkAuth', JWT.verifyJWT, (req, res) => {
+// IT WILL BREAK LMAO
+app.get('/checkAuth', AuthMiddleware.auth, (req, res) => {
     res.send("you're authenticated ✅");
 })
 
