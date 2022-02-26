@@ -4,10 +4,6 @@ const port = process.env.PORT || 8000;
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
-// utils
-const Auth = require('./src/utils/AuthUtils');
-const Users = require('./src/utils/Users');
-// middleware
 // router
 const AuthRouter = require('./src/routes/AuthRouter')
 const RegisterRouter = require('./src/routes/RegisterRouter')

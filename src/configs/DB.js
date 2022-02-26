@@ -1,43 +1,37 @@
 const mysql = require('mysql');
+const sequelize = require('sequelize');
 require('dotenv').config();
 
-const connection = mysql.createConnection(
-    {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        database: process.env.DB_NAME,
-        password: process.env.DB_PASSWORD
-    }
-);
+const DB_NAME = 'test';
+const DB_USER = 'root';
+const DB_PASSWORD = '';
 
-class DB {
-    static checkConnection = () => {
-        connection.connect((err) => {
-            if (err) return console.log(err.stack);
-            console.log(`success to connect database, connected as id ${connection.threadId}`);
-        });
-    }
-    static getAlldata = (tableName) => {
-        connection.query({
-            sql: `SELECT * FROM ${tableName}`
-        }, (err, result, fields) => {
-            if (err) throw err;
-            // change code bellow as your expected result
-            console.log(result)
-        })
-    }
-    static insertTo = (data, tableName) => {
-        connection.query({
-            sql: `insert into ${tableName} set ?`,
-            values: data
-        }, (err, result, fields) => {
-            if (err) throw err;
-            console.log(fields)
-        })
-    }
-}
+const DB = new sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
+    host: 'localhost',
+    dialect: 'mysql'
+});
 
+// class DB {
+//     connection = mysql.createConnection(
+//         {
+//             // PRODUCTION
+//             // host: process.env.DB_HOST,
+//             // user: process.env.DB_USER,
+//             // database: process.env.DB_NAME,
+//             // password: process.env.DB_PASSWORD
+//             host: 'localhost',
+//             user: 'root',
+//             database: 'test',
+//             password: ''
+//         }
+//     );
 
-DB.checkConnection();
+//     static checkConnection = () => {
+//         new DB().connection.connect((err) => {
+//             if (err) return console.log(err.stack);
+//             console.log(`success to connect database, connected as id ${new DB().connection.threadId}`);
+//         });
+//     }
+// }
 
-connection.end();
+module.exports = DB;
