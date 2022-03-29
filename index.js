@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 // router
 const AuthRouter = require('./src/routes/AuthRouter')
 const RegisterRouter = require('./src/routes/RegisterRouter')
+const UsersRouter = require('./src/routes/UsersRouter')
 
 app.use(cors(
     {
@@ -32,6 +33,7 @@ app.get('/', (req, res) => {
 app.use('/api/auth', AuthRouter);
 // Edit routes auth di file ./src/routes/AuthRouter.js
 app.use('/api/register', RegisterRouter);
+app.use('/api/users', UsersRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 

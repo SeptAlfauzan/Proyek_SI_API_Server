@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const { JSON } = require('mysql/lib/protocol/constants/types');
 const DB = require('../configs/DB');
 const User = require('../models/UsersModel');
+const EmailService = require('../utils/EmailService');
 
 class RegisterController {
     static checkUsernameTaken = async (req, res) => {
@@ -16,20 +17,32 @@ class RegisterController {
     }
     static register = async (req, res) => {
         try {
-            const { username, password, name, address, phone_num } = req.body;
+            const { email, username, password, name, address, phone } = req.body;
             // generate hashed password
             const saltRound = 10;
             const hashedPassword = bcrypt.hashSync(password, saltRound)
             // save to database
+            const verificationNum = Math.floor(100000 + Math.random() * 900000);
             const [user, created] = await User.findOrCreate({
-                where: { username },
+                where: { username, email, phone },
                 defaults: {
-                    password: hashedPassword
+                    name,
+                    password: hashedPassword,
+                    address,
+                    verificationCode: verificationNum,
                 }
             });
-            console.log('created', created);
+            console.log('created', created, user);
             // response
-            res.status(200).json({ message: 'registration success!' });
+            if (created) {
+                const verificationEmail = new EmailService();
+                verificationEmail.sendMail(email, name, verificationNum);
+                console.log(verificationEmail.checkStatus());
+
+                res.status(200).json({ message: 'registration success!' });
+            } else {
+                res.status(409).json({ message: 'registration failed!' });
+            }
         } catch (error) {
             console.log('error', error);
             res.status(500).json({ message: 'registration failed!' });
