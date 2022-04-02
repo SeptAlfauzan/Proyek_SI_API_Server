@@ -14,6 +14,7 @@ const DB_HOST = process.env.DB_HOST;
 const DB = new sequelize(DB_NAME, DB_USER, DB_PASSWORD, {
     host: DB_HOST,
     dialect: 'mysql',
+    dialectModule: require('mysql2'),
     port: process.env.DB_PORT
 });
 
