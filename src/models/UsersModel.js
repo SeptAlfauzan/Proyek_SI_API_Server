@@ -28,6 +28,10 @@ const User = DB.define('user', {
         type: DataTypes.INTEGER,
         length: 6,
     },
+    verified: {
+        type: DataTypes.BOOLEAN,
+        length: 6,
+    },
 }, {
     freezeTableName: true
 })

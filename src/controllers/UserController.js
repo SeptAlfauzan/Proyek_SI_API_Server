@@ -20,6 +20,23 @@ class UserController {
             res.status(500).json({ message: error.message });
         }
     }
+    static verify = async (req, res) => {// PUT method
+        const { username } = req.params;
+        const { email, verificationCode } = req.body;
+        try {
+            const effectedRows = await User.update({
+                verified: true,
+            },
+                {
+                    where: { username, email, verificationCode },
+                }
+            );
+            effectedRows == 1 ? res.status(200).json({ message: 'verification success!' }) : res.status(500).json({ message: 'verification fail!' });
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({ message: error });
+        }
+    }
 }
 
 module.exports = UserController;
