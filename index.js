@@ -8,6 +8,13 @@ const jwt = require('jsonwebtoken');
 const AuthRouter = require('./src/routes/AuthRouter')
 const RegisterRouter = require('./src/routes/RegisterRouter')
 const UsersRouter = require('./src/routes/UsersRouter')
+const PatnersRouter = require('./src/routes/PatnersRouter')
+const GadgetTypesRouter = require('./src/routes/GadgetTypesRouter')
+const OrdersRouter = require('./src/routes/OrdersRouter')
+const OrderStatusRouter = require('./src/routes/OrderStatusRouter')
+const ProblemCategoryRouter = require('./src/routes/ProblemCategoryRouter')
+const ReviewRouter = require('./src/routes/ReviewRouter')
+const ProgressRouter = require('./src/routes/ProgressRouter')
 
 app.use(cors(
     {
@@ -34,6 +41,14 @@ app.use('/api/auth', AuthRouter);
 // Edit routes auth di file ./src/routes/AuthRouter.js
 app.use('/api/register', RegisterRouter);
 app.use('/api/users', UsersRouter);
+app.use('/api/patners', PatnersRouter);
+app.use('/api/gadgets', GadgetTypesRouter);
+app.use('/api/gadget-types', GadgetTypesRouter);
+app.use('/api/orders', OrdersRouter);
+app.use('/api/order-status', OrderStatusRouter);
+app.use('/api/problem-category', ProblemCategoryRouter);
+app.use('/api/review', ReviewRouter);
+app.use('/api/progress', ProgressRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 
