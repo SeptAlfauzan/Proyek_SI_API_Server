@@ -15,6 +15,7 @@ const OrderStatusRouter = require('./src/routes/OrderStatusRouter')
 const ProblemCategoryRouter = require('./src/routes/ProblemCategoryRouter')
 const ReviewRouter = require('./src/routes/ReviewRouter')
 const ProgressRouter = require('./src/routes/ProgressRouter')
+const TransactionRouter = require('./src/routes/TransactionRouter')
 
 app.use(cors(
     {
@@ -49,6 +50,7 @@ app.use('/api/order-status', OrderStatusRouter);
 app.use('/api/problem-category', ProblemCategoryRouter);
 app.use('/api/review', ReviewRouter);
 app.use('/api/progress', ProgressRouter);
+app.use('/api/transaction', TransactionRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 

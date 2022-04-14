@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const res = require('express/lib/response');
+const NotifToken = require('../models/NotifToken');
 const Token = require('../models/TokenModel');
 const User = require('../models/UsersModel');
 // utils
@@ -8,7 +9,7 @@ const JWT = require('./../utils/JWTUtils');
 class AuthController {
     static login = async (req, res) => {
         try {
-            const { username, password } = req.body;
+            const { username, password, notifToken } = req.body;
             const users = await User.findOne({ where: { username } });
 
             if (users === null) return res.status(404).json({ message: 'Username not found' })
@@ -16,6 +17,8 @@ class AuthController {
             const comparePassword = bcrypt.compareSync(password, users.password);
 
             if (!comparePassword) return res.status(404).json({ message: 'Password not match!' });
+            // register token here
+            NotifToken.create({ user_id: users.id, token: notifToken });
 
             res.json({ message: 'login success' });
         } catch (error) {

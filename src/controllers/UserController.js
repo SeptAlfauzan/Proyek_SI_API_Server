@@ -1,4 +1,5 @@
 const User = require("../models/UsersModel");
+const EmailService = require('../utils/EmailService');
 
 class UserController {
     static getAll = async (req, res) => {
@@ -21,19 +22,27 @@ class UserController {
     static verify = async (req, res) => {// PUT method
         const { username } = req.params;
         const { email, verificationCode } = req.body;
+        console.log(username, email, verificationCode);
         try {
             const effectedRows = await User.update({
-                verified: true,
+                verified: 1,
             },
                 {
                     where: { username, email, verificationCode },
                 }
             );
             effectedRows == 1 ? res.status(200).json({ message: 'verification success!' }) : res.status(500).json({ message: 'verification fail!' });
+            console.log(effectedRows)
         } catch (error) {
             console.log(error);
             res.status(500).json({ message: error });
         }
+    }
+
+    static sendResetPassword = async (req, res) => {
+        // const verificationEmail = new EmailService();
+        // verificationEmail.sendMail(email, name, verificationNum);
+        // console.log(verificationEmail.checkStatus());
     }
 }
 

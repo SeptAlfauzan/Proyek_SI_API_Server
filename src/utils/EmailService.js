@@ -56,6 +56,22 @@ class EmailService {
     }
   }
 
+  async sendMailInvoice(targetEmail, targetName, code) {
+    try {
+      let info = await this.transporter.sendMail({
+        from: 'noreply.automated.email.sender@gmail.com', // sender address
+        to: targetEmail, // list of receivers
+        subject: 'Invoice Order', // Subject line
+        text: "Invoice Order anda",
+        // plain text body
+        html: EmailTemplate.invoiceTemplate(targetName, code), // html body
+      });
+      return info;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   checkStatus(info) {
     try {
       console.log("Message sent: %s", info.messageId);
@@ -67,11 +83,4 @@ class EmailService {
 }
 
 module.exports = EmailService;
-
-// const test = new EmailService();
-// console.log(test.transporter);
-// (async () => {
-//   const info = await test.sendMail('alfauzansepta@gmail.com', 'Septa', 123130);
-//   console.log(test.checkStatus(info));
-// })()
 

@@ -10,6 +10,7 @@ class RegisterController {
         try {
             const username = 'lorem';
             const check = await User.findOne({ where: { username } });
+            // register notification token
             check ? res.status(200).json({ message: 'username already taken', data: check }) : res.status(200).send(JSON.stringify({ message: 'username available' }));
         } catch (error) {
             console.log(error)
@@ -30,21 +31,26 @@ class RegisterController {
                 },
                 defaults: {
                     name,
+                    username,
+                    email,
                     password: hashedPassword,
                     address,
                     verificationCode: verificationNum,
                 }
             });
-            console.log('created', created, user);
+            console.log('created', created, user.dataValues);
             // response
             if (created) {
                 const verificationEmail = new EmailService();
                 verificationEmail.sendMail(email, name, verificationNum);
-                console.log(verificationEmail.checkStatus());
 
                 res.status(200).json({ message: 'registration success!' });
             } else {
-                res.status(409).json({ message: 'registration failed!' });
+                const reasons = [];
+                user.dataValues.username === user._previousDataValues.username ? reasons.push('username') : null;
+                user.dataValues.email === user._previousDataValues.email ? reasons.push(' email') : null;
+                user.dataValues.phone === user._previousDataValues.phone ? reasons.push(' phone number') : null;
+                res.status(409).json({ message: `registration failed! ${reasons.toString()} already taken by someone else.` });
             }
         } catch (error) {
             console.log('error', error);
