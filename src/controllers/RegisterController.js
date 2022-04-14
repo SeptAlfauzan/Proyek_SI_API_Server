@@ -35,6 +35,7 @@ class RegisterController {
                     email,
                     password: hashedPassword,
                     address,
+                    phone,
                     verificationCode: verificationNum,
                 }
             });
