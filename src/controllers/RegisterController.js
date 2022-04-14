@@ -36,6 +36,7 @@ class RegisterController {
                     password: hashedPassword,
                     address,
                     phone,
+                    verified: false,
                     verificationCode: verificationNum,
                 }
             });
@@ -43,8 +44,8 @@ class RegisterController {
             // response
             if (created) {
                 const verificationEmail = new EmailService();
-                verificationEmail.sendMail(email, name, verificationNum);
-
+                const status = await verificationEmail.sendMail(email, name, verificationNum);
+                console.log('status', status);
                 res.status(200).json({ message: 'registration success!' });
             } else {
                 const reasons = [];
