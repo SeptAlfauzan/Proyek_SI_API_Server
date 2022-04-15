@@ -5,7 +5,7 @@ class JWT {
 
     static generateToken = ({ username }) => {
         const token = jwt.sign({ username }, process.env.JWT_SECRET_KEY, {
-            expiresIn: '5m'
+            expiresIn: '7d'
         });
         return token;
     }

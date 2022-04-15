@@ -28,33 +28,34 @@ class AuthController {
 
     static getToken = async (req, res) => {
         try {
+            const { username } = req.body;
             // replace with request data from login
-            const user = await User.findOne({ where: { username: 'andi' } });
-            const tokenRecord = await Token.findOne({ where: { user_id: user.id }, order: [['version', 'DESC']] });
-            const newVersion = tokenRecord.version + 1;
+            const user = await User.findOne({ where: { username } });
+            // const tokenRecord = await Token.findOne({ where: { user_id: user.id }, order: [['version', 'DESC']] });
+            // const newVersion = tokenRecord.version + 1;
             const token = JWT.generateToken({ username: user.username });
-            const refreshToken = JWT.generateRefreshToken({ user_id: user.id, username: user.username, version: newVersion });
+            // const refreshToken = JWT.generateRefreshToken({ user_id: user.id, username: user.username, version: newVersion });
 
             const result = {
                 auth: true,
                 username: user.username,
                 'access-token': token,
-                'refresh-token': refreshToken,
-                version: newVersion
+                // 'refresh-token': refreshToken,
+                // version: newVersion
             }
             // insert to token table
-            const data = {
-                user_id: user.id,
-                refresh_token: refreshToken,
-                version: newVersion
-            }
+            // const data = {
+            //     user_id: user.id,
+            //     refresh_token: refreshToken,
+            //     version: newVersion
+            // }
 
-            const [record, created] = await Token.findOrCreate({ where: { user_id: user.id }, defaults: data });
+            // const [record, created] = await Token.findOrCreate({ where: { user_id: user.id }, defaults: data });
             // console.log(record.isNewRecord);
-            if (!record.isNewRecord) {
-                record.set(data);
-                await record.save();
-            }
+            // if (!record.isNewRecord) {
+            //     record.set(data);
+            //     await record.save();
+            // }
             res.json(result);
         } catch (error) {
             console.log(error);

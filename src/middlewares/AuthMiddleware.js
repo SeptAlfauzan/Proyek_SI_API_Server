@@ -7,6 +7,7 @@ class AuthMiddleware {
 
         if (!token) return res.status(401).send("No token, no access 🤚");
         const isAuthenticated = JWT.verifyToken(token);
+        console.log(isAuthenticated);
         // if token is valid, allow user to access the routes
         // console.log(isAuthenticated)
         if (isAuthenticated) return next();

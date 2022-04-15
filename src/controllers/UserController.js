@@ -19,6 +19,15 @@ class UserController {
             res.status(500).json({ message: error.message });
         }
     }
+    static getOneUser = async (req, res) => {
+        const { username } = req.params;
+        try {
+            const user = await User.findOne({ where: { username } });
+            res.status(200).json({ user });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
     static verify = async (req, res) => {// PUT method
         const { username } = req.params;
         const { email, verificationCode } = req.body;
