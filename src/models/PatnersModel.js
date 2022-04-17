@@ -6,6 +6,9 @@ const Patner = DB.define('patner', {
     name: {
         type: DataTypes.TEXT,
     },
+    photo: {
+        type: DataTypes.TEXT,
+    },
     username: {
         type: DataTypes.STRING,
         length: 12,
