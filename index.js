@@ -16,6 +16,7 @@ const ProblemCategoryRouter = require('./src/routes/ProblemCategoryRouter')
 const ReviewRouter = require('./src/routes/ReviewRouter')
 const ProgressRouter = require('./src/routes/ProgressRouter')
 const TransactionRouter = require('./src/routes/TransactionRouter')
+const path = require("path");
 
 app.use(cors(
     {
@@ -27,6 +28,7 @@ app.use(cors(
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
+app.use("/public", express.static(path.resolve(__dirname + '/public')));
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
