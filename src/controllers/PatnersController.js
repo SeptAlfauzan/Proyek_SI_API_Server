@@ -22,7 +22,7 @@ class PatnersController {
     }
     static register = async (req, res) => {
         const photo = req.file.path;
-        const { name, username, password, phone, address } = req.body;
+        const { name, username, password, phone, address, lat, lng } = req.body;
         try {
             if (!photo) {
                 res.status(400).send({
@@ -38,9 +38,10 @@ class PatnersController {
                 username,
                 password,
                 phone,
-                address
+                address,
+                lat,
+                lng
             });
-
             res.status(200).json({ message: `success create new data, ${patner}` });
         } catch (error) {
             res.status(500).json({ message: error.message });

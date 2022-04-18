@@ -23,6 +23,12 @@ const Patner = DB.define('patner', {
     address: {
         type: DataTypes.TEXT
     },
+    lat: {
+        type: DataTypes.TEXT
+    },
+    lng: {
+        type: DataTypes.TEXT
+    },
 }, {
     freezeTableName: true
 })
