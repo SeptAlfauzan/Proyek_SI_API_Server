@@ -1,9 +1,28 @@
 const Order = require("../models/OrdersModel");
+const sequelize = require('sequelize');
 
 class OrderController {
     static getAll = async (req, res) => {
         try {
             const order = await Order.findAll();
+            console.log(order);
+            res.json({ data: order });
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    static getNotFinished = async (req, res) => {
+        console.log(req.params)
+        try {
+            const order = await Order.findAll({
+                where: {
+                    progress_id: {
+                        [sequelize.Op.not]: [0, 2]
+                    },
+                    confirmed: true,
+                    patner_id: req.params.id
+                }
+            });
             console.log(order);
             res.json({ data: order });
         } catch (err) {

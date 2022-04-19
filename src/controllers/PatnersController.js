@@ -1,10 +1,14 @@
+const Order = require("../models/OrdersModel");
 const Patner = require("../models/PatnersModel");
 
 class PatnersController {
     static getAll = async (req, res) => {
         try {
+            await Order.hasMany(Patner, { foreignKey: 'id' })
+            await Patner.belongsTo(Order, { foreignKey: 'patner_id' })
             const patner = await Patner.findAll();
-            console.log(patner);
+            const patnerWithOrder = await Patner.findAll({ include: Order });
+            console.log(patnerWithOrder);
             res.json({ data: patner });
         } catch (err) {
             console.log(err);

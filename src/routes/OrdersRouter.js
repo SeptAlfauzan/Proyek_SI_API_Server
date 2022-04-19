@@ -4,6 +4,7 @@ const router = express.Router();
 
 // router.post('/', RegisterController.register);
 router.get('/', OrderController.getAll);
+router.get('/not-finished/:id', OrderController.getNotFinished);
 router.post('/', OrderController.addNew);
 router.delete('/:id', OrderController.delete);
 router.put('/:id', OrderController.update);

@@ -10,6 +10,15 @@ const Order = DB.define('orders', {
     gadget_id: {
         type: DataTypes.INTEGER,
     },
+    gadget: {
+        type: DataTypes.TEXT,
+    },
+    complaint: {
+        type: DataTypes.TEXT,
+    },
+    bill: {
+        type: DataTypes.BIGINT,
+    },
     user_id: {
         type: DataTypes.INTEGER,
     },
