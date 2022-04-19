@@ -1,6 +1,7 @@
 const express = require('express');
 const PatnersController = require('../controllers/PatnersController');
 const PhotoUpload = require('../middlewares/PhotoUpload');
+const AuthMiddleware = require('../middlewares/AuthMiddleware');
 const router = express.Router();
 const path = require("path");
 const multer = require("multer");
@@ -20,7 +21,7 @@ const diskStorage = multer.diskStorage({
 
 // router.post('/', RegisterController.register);
 router.get('/', PatnersController.getAll);
-router.get('/one/:username', PatnersController.getOne);
+router.get('/one/:username', AuthMiddleware.auth, PatnersController.getOne);
 router.post('/',
     multer({
         storage: diskStorage,
