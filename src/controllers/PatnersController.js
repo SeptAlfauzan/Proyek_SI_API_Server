@@ -21,8 +21,11 @@ class PatnersController {
         }
     }
     static register = async (req, res) => {
-        const photo = req.file.path;
+        const rawUrl = req.file.path;
+        const photo = rawUrl.substring(rawUrl.indexOf('public'));
+
         const { name, username, password, phone, address, lat, lng } = req.body;
+
         try {
             if (!photo) {
                 res.status(400).send({
