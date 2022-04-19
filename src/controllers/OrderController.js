@@ -30,13 +30,13 @@ class OrderController {
         }
     }
     static addNew = async (req, res) => {
-        console.log(req.body)
+        console.log('request', req.body)
         try {
             const data = req.body;
             const newRecord = await Order.create(data);
             res.json({ data: newRecord });
         } catch (error) {
-            res.status(500).json({ message: 'insert data failed!' });
+            res.status(500).json({ message: `insert data failed!, ${error.message}` });
         }
     }
     static delete = async (req, res) => {
