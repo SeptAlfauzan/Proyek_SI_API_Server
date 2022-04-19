@@ -20,7 +20,7 @@ const diskStorage = multer.diskStorage({
 
 // router.post('/', RegisterController.register);
 router.get('/', PatnersController.getAll);
-router.get('/one/:username', AuthMiddleware.auth, PatnersController.getOne);
+// router.get('/one/:username', AuthMiddleware.auth, PatnersController.getOne);
 router.post('/',
     multer({
         storage: diskStorage,
