@@ -1,5 +1,6 @@
 const Order = require("../models/OrdersModel");
 const User = require('../models/UsersModel');
+const Patner = require('../models/PatnersModel');
 const sequelize = require('sequelize');
 
 class OrderController {
@@ -46,6 +47,8 @@ class OrderController {
         try {
             User.hasMany(Order, { foreignKey: 'user_id' });
             Order.belongsTo(User, { foreignKey: 'user_id' });
+            Patner.hasMany(Order, { foreignKey: 'patner_id' });
+            Order.belongsTo(Patner, { foreignKey: 'patner_id' });
 
             const order = await Order.findAll({
                 include: [{
@@ -59,6 +62,12 @@ class OrderController {
                     where: {
                         id: req.params.id
                     },
+                }, {
+                    model: Patner,
+                    attributes: [
+                        'name',
+                        'address',
+                    ],
                 }]
             });
             console.log(order);
