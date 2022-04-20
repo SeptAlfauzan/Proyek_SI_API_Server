@@ -1,4 +1,5 @@
 const Order = require("../models/OrdersModel");
+const User = require('../models/UsersModel');
 const sequelize = require('sequelize');
 
 class OrderController {
@@ -8,7 +9,80 @@ class OrderController {
             console.log(order);
             res.json({ data: order });
         } catch (err) {
-            console.log(err);
+            res.status(500).json(err.message);
+        }
+    }
+    static getNeedToProcess = async (req, res) => {
+        console.log(req.params)
+        try {
+            User.hasMany(Order, { foreignKey: 'user_id' });
+            Order.belongsTo(User, { foreignKey: 'user_id' });
+
+            const order = await Order.findAll({
+                where: {
+                    progress_id: {
+                        [sequelize.Op.not]: [2]
+                    },
+                    patner_id: req.params.id
+                },
+                include: [{
+                    model: User,
+                    attributes: [
+                        'name',
+                        'username',
+                        'email',
+                        'address',
+                    ]
+                }]
+            });
+            console.log(order);
+            res.json({ data: order });
+        } catch (err) {
+            res.status(500).json(err.message);
+        }
+    }
+    static getHistory = async (req, res) => {
+        console.log(req.params)
+        try {
+            User.hasMany(Order, { foreignKey: 'user_id' });
+            Order.belongsTo(User, { foreignKey: 'user_id' });
+
+            const order = await Order.findAll({
+                include: [{
+                    model: User,
+                    attributes: [
+                        'name',
+                        'username',
+                        'email',
+                        'address',
+                    ],
+                    where: {
+                        id: req.params.id
+                    },
+                }]
+            });
+            console.log(order);
+            res.json({ data: order });
+        } catch (err) {
+            res.status(500).json(err.message);
+        }
+    }
+    static updateProgress = async (req, res) => {
+
+        try {
+
+            const { id } = req.params;
+
+            const order = await Order.update(data, {
+                where: {
+                    id
+                }
+            });
+
+            console.log(order);
+            res.json({ data: order });
+        } catch (err) {
+            res.status(500).json(err.message);
         }
     }
     static getNotFinished = async (req, res) => {
@@ -26,7 +100,7 @@ class OrderController {
             console.log(order);
             res.json({ data: order });
         } catch (err) {
-            console.log(err);
+            res.status(500).json(err.message);
         }
     }
     static addNew = async (req, res) => {
@@ -54,14 +128,14 @@ class OrderController {
     }
     static update = async (req, res) => {
         try {
-            const { id } = req.params;
+            const { id } = req.query;
             const data = req.body;
             const updated = await Order.update(data, {
                 where: {
                     id
                 }
             });
-            res.json({ data: updated });
+            res.json({ data: data });
         } catch (error) {
             res.status(500).json({ message: 'updated data failed!' });
         }

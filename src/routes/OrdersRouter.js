@@ -5,8 +5,11 @@ const router = express.Router();
 // router.post('/', RegisterController.register);
 router.get('/', OrderController.getAll);
 router.get('/not-finished/:id', OrderController.getNotFinished);
+router.get('/need-proceed/:id', OrderController.getNeedToProcess);
+router.get('/history/:id', OrderController.getHistory);
 router.post('/', OrderController.addNew);
 router.delete('/:id', OrderController.delete);
-router.put('/:id', OrderController.update);
+router.put('/', OrderController.update);
+router.put('/set-progress/:id', OrderController.updateProgress);
 
 module.exports = router;
