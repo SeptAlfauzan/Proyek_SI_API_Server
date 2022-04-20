@@ -25,10 +25,9 @@ class PatnersController {
         }
     }
     static getPatners = async (req, res) => {
-        const { email, username } = req.params;
-        console.log(email, username);
+        const { username } = req.params;
         try {
-            const patner = await Patner.findOne({ where: { email, username } });
+            const patner = await Patner.findOne({ where: { username } });
             res.status(200).json({ patner });
         } catch (error) {
             res.status(500).json({ message: error.message });
