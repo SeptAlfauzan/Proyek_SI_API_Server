@@ -36,7 +36,7 @@ router.post('/',
         },
     }).single("photo")
     , PatnersController.register);
-router.get('/patner/:email/:username', AuthMiddleware.auth, PatnersController.getPatners);
+router.get('/patner/:username', AuthMiddleware.auth, PatnersController.getPatners);
 router.get('/order/:username', PatnersController.orders);
 router.get('/user/reset-password', (req, res) => {
     res.send('test');
