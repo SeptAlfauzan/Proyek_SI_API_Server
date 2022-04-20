@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const res = require('express/lib/response');
-const NotifToken = require('../models/NotifToken');
+const NotifToken = require('../models/NotifTokensModel');
 const Token = require('../models/TokenModel');
 const User = require('../models/UsersModel');
 // utils
