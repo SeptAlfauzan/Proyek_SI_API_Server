@@ -16,6 +16,7 @@ const ProblemCategoryRouter = require('./src/routes/ProblemCategoryRouter')
 const ReviewRouter = require('./src/routes/ReviewRouter')
 const ProgressRouter = require('./src/routes/ProgressRouter')
 const TransactionRouter = require('./src/routes/TransactionRouter')
+const NotifTokenRouter = require('./src/routes/NotifTokenRouter')
 const path = require("path");
 
 app.use(cors(
@@ -53,6 +54,7 @@ app.use('/api/problem-category', ProblemCategoryRouter);
 app.use('/api/review', ReviewRouter);
 app.use('/api/progress', ProgressRouter);
 app.use('/api/transaction', TransactionRouter);
+app.use('/api/notif-token', NotifTokenRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
 
