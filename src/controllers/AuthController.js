@@ -18,7 +18,7 @@ class AuthController {
 
             if (!comparePassword) return res.status(404).json({ message: 'Password not match!' });
             // register token here
-            NotifToken.create({ user_id: users.id, token: notifToken });
+            // NotifToken.create({ user_id: users.id, token: notifToken });
 
             res.json({ message: 'login success' });
         } catch (error) {
