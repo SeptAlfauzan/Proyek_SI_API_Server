@@ -22,10 +22,10 @@ class ReviewController {
     }
     static delete = async (req, res) => {
         try {
-            const { id, token } = req.query;
+            const { username, token } = req.query;
             const deleted = await NotifToken.destroy({
                 where: {
-                    user_id,
+                    username,
                     token
                 }
             });
