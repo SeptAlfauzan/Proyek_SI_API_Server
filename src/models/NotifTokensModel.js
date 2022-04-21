@@ -7,8 +7,8 @@ const NotifToken = DB.define('notification_token', {
         type: DataTypes.INTEGER,
         primaryKey: true
     },
-    user_id: {
-        type: DataTypes.INTEGER,
+    username: {
+        type: DataTypes.TEXT,
     },
     token: {
         type: DataTypes.TEXT
