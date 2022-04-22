@@ -1,4 +1,5 @@
 const Order = require("../models/OrdersModel");
+const OrderStatus = require("../models/OrderStatusModel");
 const User = require('../models/UsersModel');
 const Patner = require('../models/PatnersModel');
 const sequelize = require('sequelize');
@@ -6,7 +7,20 @@ const sequelize = require('sequelize');
 class OrderController {
     static getAll = async (req, res) => {
         try {
-            const order = await Order.findAll();
+
+            OrderStatus.hasMany(Order, { foreignKey: 'order_status_id' });
+            Order.belongsTo(OrderStatus, { foreignKey: 'order_status_id' });
+
+            const order = await Order.findAll({
+                include: [
+                    {
+                        model: OrderStatus,
+                        attributes: [
+                            'name',
+                        ]
+                    }
+                ]
+            });
             console.log(order);
             res.json({ data: order });
         } catch (err) {
@@ -19,23 +33,34 @@ class OrderController {
             User.hasMany(Order, { foreignKey: 'user_id' });
             Order.belongsTo(User, { foreignKey: 'user_id' });
 
+            OrderStatus.hasMany(Order, { foreignKey: 'order_status_id' });
+            Order.belongsTo(OrderStatus, { foreignKey: 'order_status_id' });
+
             const order = await Order.findAll({
                 where: {
                     progress_id: {
-                        [sequelize.Op.not]: [4]
+                        [sequelize.Op.not]: [5]
                     },
                     patner_id: req.params.id
                 },
-                include: [{
-                    model: User,
-                    attributes: [
-                        'name',
-                        'username',
-                        'phone',
-                        'email',
-                        'address',
-                    ]
-                }]
+                include: [
+                    {
+                        model: User,
+                        attributes: [
+                            'name',
+                            'username',
+                            'phone',
+                            'email',
+                            'address',
+                        ]
+                    },
+                    {
+                        model: OrderStatus,
+                        attributes: [
+                            'name',
+                        ]
+                    }
+                ]
             });
             console.log(order);
             res.json({ data: order });
@@ -48,8 +73,12 @@ class OrderController {
         try {
             User.hasMany(Order, { foreignKey: 'user_id' });
             Order.belongsTo(User, { foreignKey: 'user_id' });
+
             Patner.hasMany(Order, { foreignKey: 'patner_id' });
             Order.belongsTo(Patner, { foreignKey: 'patner_id' });
+
+            OrderStatus.hasMany(Order, { foreignKey: 'order_status_id' });
+            Order.belongsTo(OrderStatus, { foreignKey: 'order_status_id' });
 
             const order = await Order.findAll({
                 include: [{
@@ -69,6 +98,12 @@ class OrderController {
                         'name',
                         'address',
                     ],
+                },
+                {
+                    model: OrderStatus,
+                    attributes: [
+                        'name',
+                    ]
                 }]
             });
             console.log(order);
@@ -101,7 +136,7 @@ class OrderController {
             const order = await Order.findAll({
                 where: {
                     progress_id: {
-                        [sequelize.Op.not]: [0, 4]
+                        [sequelize.Op.not]: [1, 5]
                     },
                     confirmed: true,
                     patner_id: req.params.id
