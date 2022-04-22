@@ -12,7 +12,7 @@ class TransactionController {
         try {
             User.hasMany(Transaction, { foreignKey: 'user_id' });
             Patner.hasMany(Transaction, { foreignKey: 'patner_id' });
-            Order.hasMany(Order, { foreignKey: 'order_id' });
+            Order.hasMany(Transaction, { foreignKey: 'order_id' });
 
             Transaction.belongsTo(User, { foreignKey: 'user_id' });
             Transaction.belongsTo(Patner, { foreignKey: 'patner_id' });
