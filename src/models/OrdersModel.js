@@ -34,9 +34,6 @@ const Order = DB.define('orders', {
     confirmed: {
         type: DataTypes.BOOLEAN,
     },
-    transaction_id: {
-        type: DataTypes.BOOLEAN,
-    },
     problem_category_id: {
         type: DataTypes.INTEGER,
     }

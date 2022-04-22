@@ -53,7 +53,7 @@ app.use('/api/order-status', OrderStatusRouter);
 app.use('/api/problem-category', ProblemCategoryRouter);
 app.use('/api/review', ReviewRouter);
 app.use('/api/progress', ProgressRouter);
-app.use('/api/transaction', TransactionRouter);
+app.use('/api/transactions', TransactionRouter);
 app.use('/api/notif-token', NotifTokenRouter);
 
 app.listen(port, () => console.log(`app listening on http://localhost:${port}`));
