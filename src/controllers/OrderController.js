@@ -31,6 +31,7 @@ class OrderController {
                     attributes: [
                         'name',
                         'username',
+                        'phone',
                         'email',
                         'address',
                     ]
