@@ -22,7 +22,7 @@ class OrderController {
             const order = await Order.findAll({
                 where: {
                     progress_id: {
-                        [sequelize.Op.not]: [2]
+                        [sequelize.Op.not]: [4]
                     },
                     patner_id: req.params.id
                 },
@@ -101,7 +101,7 @@ class OrderController {
             const order = await Order.findAll({
                 where: {
                     progress_id: {
-                        [sequelize.Op.not]: [0, 2]
+                        [sequelize.Op.not]: [0, 4]
                     },
                     confirmed: true,
                     patner_id: req.params.id
