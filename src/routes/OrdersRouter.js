@@ -11,5 +11,6 @@ router.post('/', OrderController.addNew);
 router.delete('/:id', OrderController.delete);
 router.put('/', OrderController.update);
 router.put('/set-progress/:id', OrderController.updateProgress);
+router.post('/pay-order/:id', OrderController.payTransaction);
 
 module.exports = router;

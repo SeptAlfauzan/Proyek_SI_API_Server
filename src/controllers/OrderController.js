@@ -1,4 +1,5 @@
 const Order = require("../models/OrdersModel");
+const Transaction = require("../models/TransactionsModel");
 const OrderStatus = require("../models/OrderStatusModel");
 const User = require('../models/UsersModel');
 const Patner = require('../models/PatnersModel');
@@ -41,7 +42,8 @@ class OrderController {
                     progress_id: {
                         [sequelize.Op.not]: [5]
                     },
-                    patner_id: req.params.id
+                    patner_id: req.params.id,
+                    canceled: false,
                 },
                 include: [
                     {
@@ -117,7 +119,8 @@ class OrderController {
         try {
 
             const { id } = req.params;
-
+            const data = req.body;
+            console.log(data)
             const order = await Order.update(data, {
                 where: {
                     id
@@ -126,6 +129,38 @@ class OrderController {
 
             console.log(order);
             res.json({ data: order });
+        } catch (err) {
+            res.status(500).json(err.message);
+        }
+    }
+    static payTransaction = async (req, res) => {
+
+        try {
+
+            const { id } = req.params;
+            const data = req.body;
+            const {
+                order_status_id,
+                amount,
+                user_id,
+                patner_id,
+                order_id
+            } = data;
+
+            const order = await Order.update({ order_status_id }, {
+                where: {
+                    id
+                }
+            });
+
+            const newTransaction = await Transaction.create({
+                amount,
+                user_id,
+                patner_id,
+                order_id
+            });
+
+            res.json({ order, newTransaction });
         } catch (err) {
             res.status(500).json(err.message);
         }
@@ -139,6 +174,7 @@ class OrderController {
                         [sequelize.Op.not]: [1, 5]
                     },
                     confirmed: true,
+                    canceled: false,
                     patner_id: req.params.id
                 }
             });
