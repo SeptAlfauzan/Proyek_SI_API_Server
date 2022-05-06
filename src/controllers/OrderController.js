@@ -4,6 +4,8 @@ const OrderStatus = require("../models/OrderStatusModel");
 const User = require('../models/UsersModel');
 const Patner = require('../models/PatnersModel');
 const sequelize = require('sequelize');
+const NotifToken = require("../models/NotifTokensModel");
+const NotifHandler = require("../utils/Notification");
 
 class OrderController {
     static getAll = async (req, res) => {
@@ -189,6 +191,34 @@ class OrderController {
         try {
             const data = req.body;
             const newRecord = await Order.create(data);
+
+            const customer = await User.findOne({ where: { id: data.user_id } });
+            const patner = await Patner.findOne({ where: { id: data.patner_id } });
+
+            const customerNotifTokensData = await NotifToken.findAll({
+                where: {
+                    username: customer.username
+                }
+            })
+            const patnerNotifTokensData = await NotifToken.findAll({
+                where: {
+                    username: patner.username
+                }
+            })
+
+            const customerNotifTokens = customerNotifTokensData.map(data => {
+                if (data.token) return data.token;
+                return data;
+            })
+            const patnerNotifTokens = patnerNotifTokensData.map(data => {
+                if (data.token) return data.token;
+                return data;
+            })
+
+            await NotifHandler.send(customerNotifTokens, 'Yay! Anda sukses membuat pesanan baru 🎉');
+            await NotifHandler.send(patnerNotifTokens, 'Ada pesanan baru nih, ayo dicek.');
+
+            // return res.json({ customerNotifTokens, patnerNotifTokens });
             res.json({ data: newRecord });
         } catch (error) {
             res.status(500).json({ message: `insert data failed!, ${error.message}` });
